@@ -32,7 +32,7 @@ class IS800_2007(object):
                  f_y - Yield stress of the plate material in MPa (float)
                  e = sqrt(250/f_y)
                  """
-    def  null (b,tf,d,tw,t,D,tf,):
+    def  null (self,b,tf,d,tw,t,D):
 
 
         cl_3_7_Table_2 = {
@@ -49,7 +49,7 @@ class IS800_2007(object):
         "web_of_an_I_or_H_section": {"general":d/tw,"axial_compression": d/tw}
         }
         }
-    def cl_3_7_3_class(cl_3_7_Table_2,e,r1):
+    def cl_3_7_3_class(self,cl_3_7_Table_2,e,r1):
         """ Gives class of cross sections using table 2
         Args:
              b - width of element (float)
@@ -357,7 +357,7 @@ cl_3_8_Table_3 = {"case1": 180,
             A_vg: Minimum gross in shear along bolt line parallel to external force [in sq.mm](float)
             A_vn: Minimum net area in shear along bolt line parallel to external force[in sq.mm](float)
             A_tg: Minimum gross area in tension from the bolt hole to the toe of the angle,
-                    end bolt line, perpendicukar to the line of force, respectively [ in sq.mm](float)
+                    end bolt line, perpendicular to the line of force, respectively [ in sq.mm](float)
             A_tn: Minimum net area in tension from the bolt hole to the toe of the angle,
                     end bolt line, perpendicular to the line of force, respectively [in sq.mm]
             f_u:  Ultimate stress of the plate ,material in Mpa(float)
@@ -3179,6 +3179,7 @@ cl_3_8_Table_3 = {"case1": 180,
         return M_cr
     # ==========================================================================
     """    ANNEX  F       CONNECTIONS   """
+
     # ==========================================================================
     """    ANNEX  G       "general" RECOMMENDATIONS FOR STEELWORK TENDERS AND CONTRACTS   """
     # ==========================================================================
