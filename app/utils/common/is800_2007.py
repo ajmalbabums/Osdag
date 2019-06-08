@@ -3167,7 +3167,33 @@ cl_3_8_Table_3 = {"case1": 180,
 
         return M_cr
     # ==========================================================================
-    """    ANNEX  F       CONNECTIONS   """
+    """    ANNEX  F       CONNECTIONS  """
+    #Connnection classification
+   """Connection classification using table 43 and 44"""
+    def F_4_3_1 (self,d,da,db,dg,g,ta,tc,tf,tw,tp,,la,lt,M):
+        """
+       :param d:depth of beam (float)
+       :param da:depth of the angle in mm (float)
+       :param db:diameter of the bolt in mm (float)
+       :param dg:centre to centre of outermost bolt of the end plate (float)
+       :param g:gauge distance of bolt line (float)
+       :param ta:thickness of the top angle in mm (float)
+       :param tc:thickness of the web angle in mm (float)
+       :param tf:thinkness of the flange T-stub connector in mm (float)
+       :param tw:thickness of the web of the beam in the cconnnection in mm (float)
+       :param tp:thickness of the end plate in mm(float)
+       :param la:length of angle in mm (float)
+       :param lt:length if the T-sub connector in mm(float)
+       :param M: moment at the joint in KNm(float)
+       :return:theta_r (float)
+
+        """
+        table_44 ={"A":{{"c1":1.91*10**4,"c2":1.3*10**11,"c3":2.7*10**17},(da**-2.4)*(tc**-1.81)*(g**0.15)},
+                   "B":{{"c1":1.64*10**3,"c2":1.03*10**14,"c3":8.18*10**25},(da**-2.4)*(tc**-1.81)*(g**0.15)},
+                   "C":{{"c1":2.24*10**(-1),"c2":1.86*10**4,"c3":3.23*10**8},(da**-1.287)*(tc**-0.415)*(ta**-1.128)*(la**-0.694)},
+                   }
+
+
     # ==========================================================================
     """    ANNEX  G       GENERAL RECOMMENDATIONS FOR STEELWORK TENDERS AND CONTRACTS   """
     # ==========================================================================
