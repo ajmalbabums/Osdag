@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_design_preferences.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -346,7 +346,9 @@ class Ui_DesignPreferences(object):
         self.label_86.setFont(font)
         self.label_86.setObjectName("label_86")
         self.label_13 = QtWidgets.QLabel(self.tab_Column)
-        self.label_13.setGeometry(QtCore.QRect(680, 190, 241, 301))
+        self.label_13.setGeometry(QtCore.QRect(700, 170, 241, 341))
+        self.label_13.setText("")
+        self.label_13.setPixmap(QtGui.QPixmap(":/newPrefix/images/user_section1.png"))
         self.label_13.setObjectName("label_13")
         self.tabWidget.addTab(self.tab_Column, "")
         self.tab_Beam = QtWidgets.QWidget()
@@ -650,9 +652,11 @@ class Ui_DesignPreferences(object):
         font.setPointSize(11)
         self.label_88.setFont(font)
         self.label_88.setObjectName("label_88")
-        self.label_12 = QtWidgets.QLabel(self.tab_Beam)
-        self.label_12.setGeometry(QtCore.QRect(676, 190, 251, 301))
-        self.label_12.setObjectName("label_12")
+        self.label_14 = QtWidgets.QLabel(self.tab_Beam)
+        self.label_14.setGeometry(QtCore.QRect(700, 170, 241, 341))
+        self.label_14.setText("")
+        self.label_14.setPixmap(QtGui.QPixmap(":/newPrefix/images/user_section1.png"))
+        self.label_14.setObjectName("label_14")
         self.tabWidget.addTab(self.tab_Beam, "")
         self.tab_Bolt = QtWidgets.QWidget()
         self.tab_Bolt.setObjectName("tab_Bolt")
@@ -996,7 +1000,6 @@ class Ui_DesignPreferences(object):
         self.label_86.setText(_translate("DesignPreferences", "Thermal expansion coeff.\n"
 "\n"
 "(x10 / C)"))
-        self.label_13.setText(_translate("DesignPreferences", "TextLabel"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_Column), _translate("DesignPreferences", "Column"))
         self.label_58.setText(_translate("DesignPreferences", "Modulus of elasticity, E (GPa)"))
         self.label_59.setText(_translate("DesignPreferences", "Flange width, B (mm)*"))
@@ -1035,7 +1038,6 @@ class Ui_DesignPreferences(object):
 "\n"
 "(x10 / C)"))
         self.label_88.setText(_translate("DesignPreferences", "Poissons ratio, v"))
-        self.label_12.setText(_translate("DesignPreferences", "TextLabel"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_Beam), _translate("DesignPreferences", "Beam"))
         self.label_note.setText(_translate("DesignPreferences", "NOTE : If slip is permitted under the design load, design the bolt as a bearing\n"
 "bolt and select corresponding bolt grade."))
@@ -1043,7 +1045,7 @@ class Ui_DesignPreferences(object):
         self.textBrowser.setHtml(_translate("DesignPreferences", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Arial\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<table border=\"0\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;\" cellspacing=\"2\" cellpadding=\"0\">\n"
 "<tr>\n"
 "<td colspan=\"3\">\n"
@@ -1168,7 +1170,7 @@ class Ui_DesignPreferences(object):
         self.textBrowser_weldDescription.setHtml(_translate("DesignPreferences", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Arial\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt;\">Shop weld takes a material safety factor of 1.25</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt;\">Field weld takes a material safety factor of 1.5</span></p>\n"
 "<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt;\">(IS 800 - cl. 5. 4. 1 or Table 5)</span></p></body></html>"))
@@ -1191,7 +1193,7 @@ class Ui_DesignPreferences(object):
         self.textBrowser_detailingDescription.setHtml(_translate("DesignPreferences", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'Arial\'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt;\">The minimum edge and end distances from the centre of any hole to the nearest edge of a plate shall not be less than </span><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:600;\">1.7</span><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt;\"> times the hole diameter in case of </span><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:600;\">[a- sheared or hand flame cut edges] </span><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt;\">and </span><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:600;\">1.5 </span><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt;\">times the hole diameter in case of </span><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:600;\">[b - Rolled, machine-flame cut, sawn and planed edges]</span><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt;\"> (IS 800 - cl. 10. 2. 4. 2)</span></p>\n"
 "<p align=\"justify\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Calibri\'; font-size:8pt; vertical-align:middle;\"><br /></p>\n"
 "<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt;\">This gap should include the tolerance value of 5mm. So if the assumed clearance is 5mm, then the gap should be = 10mm (= 5mm {clearance} + 5 mm{tolerance})</span></p>\n"
