@@ -25,5 +25,6 @@
     <file>images/webextnboth.png</file>
     <file>images/beam_column_endplate.png</file>
     <file>images/beam_column.png</file>
+ <file>images/user_section1.png</file>
   </qresource>
 </RCC>

@@ -609,6 +609,7 @@ class Maincontroller(QMainWindow):
 
 		self.ui.btn_Design.clicked.connect(self.design_btnclicked)
 		self.ui.btn_Design.clicked.connect(self.osdag_header)
+
 		self.ui.btn_Reset.clicked.connect(self.reset_btnclicked)
 		self.ui.btnInput.clicked.connect(lambda: self.dockbtn_clicked(self.ui.inputDock))
 		self.ui.btnOutput.clicked.connect(lambda: self.dockbtn_clicked(self.ui.outputDock))
@@ -841,6 +842,10 @@ class Maincontroller(QMainWindow):
 	def osdag_header(self):
 		image_path = os.path.abspath(os.path.join(os.getcwd(), os.path.join("ResourceFiles", "Osdag_header.png")))
 		shutil.copyfile(image_path, os.path.join(str(self.folder), "images_html", "Osdag_header.png"))
+
+
+
+
 
 	def design_prefer(self):
 		self.designPrefDialog.show()
