@@ -50,11 +50,13 @@ class Bolt_Group(Component):
         super(Bolt, self).__init__(material)
 
     def __repr__(self):
-        repr = "Bolt\n"
-        repr += "Diameter: {}\n".format(self.diameter)
-        repr += "Type: {}\n".format(self.bolt_type)
-        repr += "Grade: {}\n".format(self.grade)
-        repr += "Length: {}".format(self.length)
+        repr = "Bolt Group\n"
+        repr += "no_of_bolts: {}\n".format(self.no_of_bolts)
+        repr += "group_capacity {}\n".format(self.group_capacity)
+        repr += "gauge {}\n".format(self.gauge)
+        repr += "pitch {}\n".format(self.pitch)
+        repr += "end {}\n".format(self.end)
+        repr += "edge {}\n".format(self.edge)
         return repr
 
 class Nut(Component):
