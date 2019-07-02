@@ -59,33 +59,42 @@ class Bolt_Group(Component):
         repr += "edge {}\n".format(self.edge)
         return repr
     
-    def calculate_no_of_bolts():
-        #TODO
-        pass
+    def calculate_no_of_bolts(self,V_d,V_bolt):
+        return V_d / V_bolt
     
     def min_pitch_gauge_check(self, pitch_or_gauge):
-        """Checks pitch or gauge for minimum and maximum permissible values
-
-        Args:
-             d - Nominal diameter of fastener in mm (float)
-
-        Returns:
-            True - pitch or gauge is more than minimum distance between centre of fasteners
-            False - otherwise
-
-        Note:
-            Reference:
-            IS 800:2007, cl. 10.2.2
-
-        """
-        if pitch_or_gauge > IS800_2007.cl_10_2_2_min_spacing(pitch_or_gauge):
+        if pitch_or_gauge >= IS800_2007.cl_10_2_2_min_spacing(pitch_or_gauge):
             return True
         else:
             return False
-            
-        
-    def end_edge_check(self,end_or_edge):
-        pass
+
+    def max_pitch_gauge_check(self, pitch_or_gauge,plate_thickness):
+        if pitch_or_gauge =< IS800_2007.cl_10_2_3_1_max_spacing(plate_thickness)
+            return True
+        else:
+            return False
+
+
+    def max_pitch_check_2(self, pitch, plate_thickness, compression_or_tension):
+        if pitch_or_gauge = < IS800_2007.cl_10_2_3_2_max_pitch_tension_compression(pitch, plate_thickness, compression_or_tension)
+            return True
+        else:
+            return False
+
+
+    def min_end_edge_check(self,end_or_edge,bolt_hole_type, edge_type):
+        if end_or_edge >= IS800_2007.cl_10_2_4_2_min_edge_end_dist(end_or_edge, bolt_hole_type, edge_type):
+            return True
+        else:
+            return False
+
+
+    def max_end_edge_check(self, end_or_edge,plate_thicknesses, f_y, corrosive_influences):
+        if end_or_edge <= IS800_2007.cl_10_2_4_3_max_edge_dist(plate_thicknesses, f_y, corrosive_influences):
+            return True
+        else:
+            return False
+
     def check_for_long_joints():
         pass
         
