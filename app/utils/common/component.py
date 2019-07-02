@@ -1,7 +1,7 @@
 from app.utils.common.material import Material
 from app.utils.common.is800_2007 import IS800_2007
 import sqlite3
-
+from is800_2007 import IS800_2007
 
 class Component(object):
 
@@ -58,7 +58,37 @@ class Bolt_Group(Component):
         repr += "end {}\n".format(self.end)
         repr += "edge {}\n".format(self.edge)
         return repr
+    
+    def calculate_no_of_bolts():
+        #TODO
+        pass
+    
+    def min_pitch_gauge_check(self, pitch_or_gauge):
+        """Checks pitch or gauge for minimum and maximum permissible values
 
+        Args:
+             d - Nominal diameter of fastener in mm (float)
+
+        Returns:
+            True - pitch or gauge is more than minimum distance between centre of fasteners
+            False - otherwise
+
+        Note:
+            Reference:
+            IS 800:2007, cl. 10.2.2
+
+        """
+        if pitch_or_gauge > IS800_2007.cl_10_2_2_min_spacing(pitch_or_gauge):
+            return True
+        else:
+            return False
+            
+        
+    def end_edge_check(self,end_or_edge):
+        pass
+    def check_for_long_joints():
+        pass
+        
 class Nut(Component):
 
     def __init__(self, diameter=0.0, material=Material()):
