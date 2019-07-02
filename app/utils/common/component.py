@@ -36,7 +36,26 @@ class Bolt(Component):
         # self.shear_capacity = IS800_2007.cl_10_3_3_bolt_shear_capacity()
         # TODO : Bolt shear capacity functions
         pass
+        
+        
+class Bolt_Group(Component):
+    
+    def __init__(self, no_of_bolts=0.0, group_capacity=0.0, gauge=0.0, pitch=0.0, end=0.0, edge=0.0, material=Material()):
+        self.no_of_bolts = no_of_bolts
+        self.group_capacity = group_capacity
+        self.gauge = gauge
+        self.pitch = pitch
+        self.end = end
+        self.edge = edge
+        super(Bolt, self).__init__(material)
 
+    def __repr__(self):
+        repr = "Bolt\n"
+        repr += "Diameter: {}\n".format(self.diameter)
+        repr += "Type: {}\n".format(self.bolt_type)
+        repr += "Grade: {}\n".format(self.grade)
+        repr += "Length: {}".format(self.length)
+        return repr
 
 class Nut(Component):
 
@@ -48,7 +67,6 @@ class Nut(Component):
         repr = "Nut\n"
         repr += "Diameter: {}".format(self.diameter)
         return repr
-
 
 class Section(Component):
 
