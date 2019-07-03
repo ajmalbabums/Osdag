@@ -12,16 +12,26 @@ class Component(object):
 
 class Bolt(Component):
 
-    def __init__(self, grade=0.0, diameter=0.0, bolt_type="", length=0.0, material=Material()):
+    def __init__(self, grade=0.0, diameter=0.0,thread_area=0, bolt_type="", length=0.0, material=Material()):
         self.grade = grade
         self.diameter = diameter
+        self.shank_area = 3.14*0.25*diameter**2
+        self.thread_area= thread_area
         self.bolt_type = bolt_type
         self.length = length
+    #   bearing bolt
         self.shear_capacity = 0.0
         self.bearing_capacity = 0.0
         self.bolt_capacity = 0.0
-        self.no_of_bolts = 0
-        self.bolt_group_capacity = 0.0
+    #   friction bolt
+        self.is_friction_grip = True
+        self.slip_resistance = 0
+    #   both
+        self.shear_in_bolt = 0
+        self.tension_in_bolt = 0
+        self.tension_capacity = 0
+        self.combined_capacity_check = "safe"
+
         super(Bolt, self).__init__(material)
 
     def __repr__(self):
@@ -32,10 +42,47 @@ class Bolt(Component):
         repr += "Length: {}".format(self.length)
         return repr
 
-    def calculate_bolt_shear_capacity(self, bolt_diameter):
-        # self.shear_capacity = IS800_2007.cl_10_3_3_bolt_shear_capacity()
-        # TODO : Bolt shear capacity functions
-        pass
+    def calculate_thread_area(self):
+        self.thread_area = 0.78*self.shank_area
+    # todo thread_area database
+    """Friction bolt"""
+    def calculate_slip_resistance(self, n_e ,mu_f):
+        self.slip_resistance = IS800_2007.cl_10_4_3_bolt_slip_resistance(self.material.fub, self.shank_area, n_e, mu_f)
+
+    # n_e and m_uf are plate attributes
+    """bearing bolt """
+    def calculate_bolt_shear_capacity(self):
+        self.shear_capacity = IS800_2007.cl_10_3_3_bolt_shear_capacity(self.material.fub, self.shank_area, self.thread_area)
+
+    def calculate_bolt_bearing_capacity(self,t,e,p):
+        self.bearing_capacity = IS800_2007.cl_10_3_4_bolt_bearing_capacity(self.material.fu, self.material.fub, t, self.diameter, e, p)
+    # use t , e , p from bolt group class
+
+    def calculate_bolt_capacity(self):
+        if self.is_friction_grip is False:
+            self.bolt_capacity = min(self.bearing_capacity, self.shear_capacity)
+    """same for both"""
+    def calculate_tension_capacity(self, An):
+
+        self.tension_capacity = min(0.9*self.material.fub*An, self.material.fyb*self.shank_area*1.25/1.1 )
+
+    def calculate_combined_capacity(self, shear_capacity_of_friction_bolt):
+        if self.is_friction_grip is False:
+            if ((self.shear_in_bolt/1.25)/self.shear_capacity)**2 + ((self.tension_in_bolt/1.25)/self.tension_capacity)**2 <= 1:
+                self.combined_capacity_check = "safe"
+            else:
+                self.combined_capacity_check = "unsafe"
+        elif self.is_friction_grip is True:
+            if ((self.shear_in_bolt/1.25)/shear_capacity_of_friction_bolt)**2 + ((self.tension_in_bolt/1.25)/self.tension_capacity)**2 <= 1:
+                self.combined_capacity_check = "safe"
+            else:
+                self.combined_capacity_check = "unsafe"
+
+
+
+
+
+
 
 
 class Nut(Component):
