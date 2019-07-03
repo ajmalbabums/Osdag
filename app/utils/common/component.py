@@ -173,17 +173,40 @@ class Weld(Component):
 
 class Plate(Component):
 
-    def __init__(self, thickness=0.0, height=0.0, width=0.0, material=Material()):
+    def __init__(self, thickness, height, width, plate_type,material=Material()):
         self.thickness = thickness
         self.height = height
         self.width = width
+        self.plate_type = plate_type
         super(Plate, self).__init__(material)
 
     def __repr__(self):
         repr = "Plate\n"
         repr += "Thickness: {}".format(self.thickness)
+        repr += "Height: {}".format(self.height)
+        repr += "Width: {}".format(self.width)
+        repr += "Type: {}".format(self.plate_type)
         return repr
 
+    def calculate_minimum_plate_height():
+        pass
+    def calculate_minimum_plate_width():
+        pass
+    def calculate_max_plate_width():
+        pass
+    def calculate_minimum_plate_thickness():
+        pass
+    def calculate_max_plate_thickness():
+        pass
+    def moment_capacity_check():
+        pass
+    def calculate_block_shear():
+        pass
+    def shear_yielding_check():
+        pass
+
+    def shear_rupture_check():
+        pass
 
 class Angle(Component):
 
