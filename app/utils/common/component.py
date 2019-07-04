@@ -40,14 +40,17 @@ class Bolt(Component):
         
 class Bolt_Group(Component):
     
-    def __init__(self, no_of_bolts=0.0, group_capacity=0.0, gauge=0.0, pitch=0.0, end=0.0, edge=0.0, material=Material()):
-        self.no_of_bolts = no_of_bolts
-        self.group_capacity = group_capacity
+    def __init__(self, bolt, no_rows, no_columns, gauge=0.0, pitch=0.0, end=0.0, edge=0.0, material=Material()):
+        self.bolt = bolt
+        self.no_rows = no_rows
+        self.no_columns = no_columns
+        self.no_of_bolts = no_rows * no_columns
+        self.group_capacity = self.no_of_bolts * self.bolt.bolt_capacity
         self.gauge = gauge
         self.pitch = pitch
         self.end = end
         self.edge = edge
-        super(Bolt, self).__init__(material)
+        super(Bolt_Group, self).__init__(material)
 
     def __repr__(self):
         repr = "Bolt Group\n"
@@ -59,44 +62,73 @@ class Bolt_Group(Component):
         repr += "edge {}\n".format(self.edge)
         return repr
     
-    def calculate_no_of_bolts(self,V_d,V_bolt):
-        return V_d / V_bolt
-    
-    def min_pitch_gauge_check(self, pitch_or_gauge):
-        if pitch_or_gauge >= IS800_2007.cl_10_2_2_min_spacing(pitch_or_gauge):
+    def no_of_bolts_check(self, v_d, v_bolt):
+        if self.no_of_bolts > v_d / v_bolt :
+            return True
+        if self.no_of_bolts > v_d / v_bolt :
+            return False
+
+    def min_pitch_check(self):
+        if self.pitch >= IS800_2007.cl_10_2_2_min_spacing(self.pitch):
             return True
         else:
             return False
 
-    def max_pitch_gauge_check(self, pitch_or_gauge,plate_thickness):
-        if pitch_or_gauge =< IS800_2007.cl_10_2_3_1_max_spacing(plate_thickness)
+    def min_gauge_check(self):
+        if self.gauge >= IS800_2007.cl_10_2_2_min_spacing(self.gauge):
             return True
         else:
             return False
 
-
-    def max_pitch_check_2(self, pitch, plate_thickness, compression_or_tension):
-        if pitch_or_gauge = < IS800_2007.cl_10_2_3_2_max_pitch_tension_compression(pitch, plate_thickness, compression_or_tension)
-            return True
-        else:
-            return False
-
-
-    def min_end_edge_check(self,end_or_edge,bolt_hole_type, edge_type):
-        if end_or_edge >= IS800_2007.cl_10_2_4_2_min_edge_end_dist(end_or_edge, bolt_hole_type, edge_type):
+    def max_pitch_check(self, plate):
+        if self.pitch <= IS800_2007.cl_10_2_3_1_max_spacing(plate.thickness)
             return True
         else:
             return False
 
 
-    def max_end_edge_check(self, end_or_edge,plate_thicknesses, f_y, corrosive_influences):
-        if end_or_edge <= IS800_2007.cl_10_2_4_3_max_edge_dist(plate_thicknesses, f_y, corrosive_influences):
+    def max_gauge_check(self, plate):
+        if self.gauge <= IS800_2007.cl_10_2_3_1_max_spacing(plate.thickness)
             return True
         else:
             return False
 
-    def check_for_long_joints():
-        pass
+
+    def max_pitch_check_2(self, plate, compression_or_tension):
+        if self.pitch <= IS800_2007.cl_10_2_3_2_max_pitch_tension_compression(self.pitch, plate.thickness, compression_or_tension)
+            return True
+        else:
+            return False
+
+    def min_end_check(self, bolt_hole_type, edge_type):
+        if self.end >= IS800_2007.cl_10_2_4_2_min_edge_end_dist(self.end, bolt_hole_type, edge_type):
+            return True
+        else:
+            return False
+
+    def min_edge_check(self,bolt_hole_type, edge_type):
+        if self.edge >= IS800_2007.cl_10_2_4_2_min_edge_end_dist(self.end, bolt_hole_type, edge_type):
+            return True
+        else:
+            return False
+
+    def max_end_check(self, plate, f_y, corrosive_influences):
+        if self.end <= IS800_2007.cl_10_2_4_3_max_edge_dist(plate.thickness, f_y, corrosive_influences):
+            return True
+        else:
+            return False
+
+    def max_edge_check(self, plate, f_y, corrosive_influences):
+        if self.edge <= IS800_2007.cl_10_2_4_3_max_edge_dist(plate.thickness, f_y, corrosive_influences):
+            return True
+        else:
+            return False
+
+
+    def check_for_long_joints(self):
+        l_j = (self.no_rows - 1) * self.pitch
+        beta_lj = IS800_2007.cl_10_3_3_1_bolt_long_joint(self.bolt.diameter, l_j)
+        return beta_lj
         
 class Nut(Component):
 
@@ -188,19 +220,72 @@ class Plate(Component):
         repr += "Type: {}".format(self.plate_type)
         return repr
 
-    def calculate_minimum_plate_height():
-        pass
-    def calculate_minimum_plate_width():
-        pass
-    def calculate_max_plate_width():
-        pass
-    def calculate_minimum_plate_thickness():
-        pass
-    def calculate_max_plate_thickness():
-        pass
-    def moment_capacity_check():
+    def calculate_minimum_plate_height(self,depth_of_beam):
+        """
+        Reference: Handbook
+        on
+        Structural
+        Steel
+        Detailing, INSDAG - Chapter
+        5, Section
+        5.2.3, Page 5.7
+        """
+        return 0.6 * depth_of_beam
+
+    def calculate_maximum_plate_height(self,db,tbf,rb1,gap,notch_height,Db,Tbf,Rb1,connectivity):
+        """
+        Args:
+            db - Depth of supported beam
+            tbf - Thickness of supported beam flange
+            rb1 - Root radius of supported beam flange
+            gap - Clearance between fin plate and supported beam flange
+            notch_height - max(Tbf, tbf) + max(Rb1, rb1) + max(Tbf / 2, tbf / 2, 10)
+            Db - Depth of supporting beam
+            Tbf - Thickness of supporting beam flange
+            Rb1 - Root radius of supporting beam flange
+            connectivity - 'beam-column','beam-beam with single notch' or 'beam-beam with double notch'
+        Returns:
+            max_plate_height
+        """
+        notch_height = max(Tbf, tbf) + max(Rb1, rb1) + max(Tbf / 2, tbf / 2, 10)
+        if connectivity == 'beam-column':
+            max_plate_height = db − 2*(tbf + rb1 + gap)
+        if connectivity == 'beam-beam with single notch':
+            max_plate_height = db−tbf+rb1−notch_height
+        if connectivity == 'beam-beam with double notch':
+            max_plate_height = min(Db, db) − 2 ∗ notch_height
+        return max_plate_height
+
+    def calculate_minimum_plate_width(self,bf):
+        return bf
+    def calculate_max_plate_width(self,bf):
+        return bf + 25
+    def calculate_minimum_plate_thickness(self,F,fy,hp,tw):
+        """
+        Args:
+            F - factored shear force
+            fy - yield stress
+            hp - height of plate
+            tw - thickness of secondary beam web
+        Note:
+            [Reference: N. Subramanian’s Design of Steel Structures - Chapter 5, Sec. 5.7.7 - Page 373]
+        """
+        return max(tw, 5*F/(fy*hp))
+    def calculate_max_plate_thickness(self,bolt_diameter):
+        """
+        Args:
+            bolt_diameter
+        Returns:
+            tp - maximum plate thickness
+        Note:
+            [Reference: Handbook on Structural Steel Detailing, INSDAG - Chapter 5, Section 5.2.3, Page 5.7]
+        """
+        return 0.5 * bolt_diameter
+    def moment_capacity_check(Mdb,F,d_bw,f_y,Z):
+        #TODO
         pass
     def calculate_block_shear():
+        #TODO
         pass
     def shear_yielding_check():
         pass
