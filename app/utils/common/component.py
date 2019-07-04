@@ -191,16 +191,32 @@ class Column(Section):
 
 class Weld(Component):
 
-    def __init__(self, size=0.0, length=0.0, material=Material()):
+    def __init__(self, type, size=0.0, length=0.0, eff_length = 0.0, material=Material()):
+        self.type = type
         self.size = size
         self.length = length
+        self.throat_size = size * 0.7
+        self.eff_length = eff_length
         super(Weld, self).__init__(material)
 
     def __repr__(self):
         repr = "Weld\n"
+        repr += "Type: {}\n".format(self.type)
         repr += "Size: {}\n".format(self.size)
         repr += "Length: {}".format(self.length)
+        repr += "Throat_size: {}".format(self.throat_size)
+        repr += "Eff_length: {}".format(self.eff_length)
         return repr
+
+    def calculate_throat_size():
+        pass
+
+    def claculate_eff_length():
+        pass
+    def calculate_shear_strength():
+        pass
+    def check_for_long_joints():
+        pass
 
 
 class Plate(Component):
