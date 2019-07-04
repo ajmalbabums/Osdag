@@ -3175,7 +3175,56 @@ class IS800_2007(object):
 
         return M_cr
     # ==========================================================================
-    """    ANNEX  F       CONNECTIONS   """
+    """    ANNEX  F       CONNECTIONS  """
+    #Connnection classification
+   """Connection classification using table 43 and 44"""
+    def F_4_3_1 (d,da,db,dg,g,ta,tc,tf,tw,tp,la,lt,M,connection_type):
+        """
+       :param d:depth of beam (float)
+       :param da:depth of the angle in mm (float)
+       :param db:diameter of the bolt in mm (float)
+       :param dg:centre to centre of outermost bolt of the end plate (float)
+       :param g:gauge distance of bolt line (float)
+       :param ta:thickness of the top angle in mm (float)
+       :param tc:thickness of the web angle in mm (float)
+       :param tf:thinkness of the flange T-stub connector in mm (float)
+       :param tw:thickness of the web of the beam in the connnection in mm (float)
+       :param tp:thickness of the end plate in mm(float)
+       :param la:length of angle in mm (float)
+       :param lt:length if the T-sub connector in mm(float)
+       :param M: moment at the joint in KNm(float)
+       :param connection_type: type of connection (str)
+       :return:theta_r (float)
+
+        """
+        table_44 ={"A":{{"c1":1.91*10**4,"c2":1.3*10**11,"c3":2.7*10**17},(da**-2.4)*(tc**-1.81)*(g**0.15)},
+                   "B":{{"c1":1.64*10**3,"c2":1.03*10**14,"c3":8.18*10**25},(da**-2.4)*(tc**-1.81)*(g**0.15)},
+                   "C":{{"c1":2.24*10**(-1),"c2":1.86*10**4,"c3":3.23*10**8},(d**-1.287)*(tc**-0.415)*(ta**-1.128)*(la**-0.694)},
+                   "D":{{"c1":1.63*10**3,"c2":7.25*10**14,"c3":3.31*10**23},(d**-1.5)*(ta**-0.5)*(la**-0.7)*(db**-1.1)},
+                   "E":{{"c1":1.78*10**4,"c2":-9.55*10**16,"c3":5.54*10**29},(dg**-2.4)*(tp**-0.4)*(tf**-1.5)},
+                   "F":{{"c1":2.6*10**2,"c2":-9.55*10**16,"c3":5.54*10**29},(dg**-2.4)*(tp**-0.4)},
+                   "G":{{"c1":4.05*10**2,"c2":4.45*10**13,"c3":-2.03*10**23},(d**-1.5)*(tf**-0.5)*(lt**-0.7)*(db**-1.1)},
+                   "H":{{"c1":3.87,"c2":2.71*10**5,"c3":6.06*10**11},(tp**-1.6)*(g**1.6)*(tw**-0.5)*(db**-2.3)}
+                   }
+        global theta_r
+        theta_r= (table_44[connection_type][0]["c1"]*table_44[connection_type][1]*M)+(table_44[connection_type][0]["c2"]*(table_44[connection_type][1]*M)**3)+(table_44[connection_type][0]["c3"]*(table_44[connection_type][1]*M)**5)
+        return theta_r
+
+    def connection_classification(theta_r,M,Mpb,theta_p):
+        m1=M/Mpb
+        o1=theta_r/theta_p
+        if m1>1 or 3*m1+2*o1>5.4 or o1<0 or m1<0:
+            return 0
+        elif m1>=0.7 or m1>=2.5*o1:
+            connection= "rigid connection"
+        elif m1<=0.2 or m1<=0.5*o1:
+            connection = "Flexible connection"
+        else:
+            connection="Semi rigid"
+        return connection
+
+
+
     # ==========================================================================
     """    ANNEX  G       GENERAL RECOMMENDATIONS FOR STEELWORK TENDERS AND CONTRACTS   """
     # ==========================================================================
