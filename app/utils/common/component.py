@@ -38,7 +38,7 @@ class Bolt(Component):
         pass
         
         
-class Bolt_Group(Component):
+class BoltGroup(Component):
     
     def __init__(self, bolt, no_rows, no_columns, gauge=0.0, pitch=0.0, end=0.0, edge=0.0, material=Material()):
         self.bolt = bolt
@@ -50,7 +50,7 @@ class Bolt_Group(Component):
         self.pitch = pitch
         self.end = end
         self.edge = edge
-        super(Bolt_Group, self).__init__(material)
+        super(BoltGroup, self).__init__(material)
 
     def __repr__(self):
         repr = "Bolt Group\n"
@@ -220,7 +220,7 @@ class Plate(Component):
         repr += "Type: {}".format(self.plate_type)
         return repr
 
-    def calculate_minimum_plate_height(self,depth_of_beam):
+    def min_height_check(self,depth_of_beam):
         """
         Reference: Handbook
         on
@@ -230,9 +230,12 @@ class Plate(Component):
         5, Section
         5.2.3, Page 5.7
         """
-        return 0.6 * depth_of_beam
+        if self.height >= 0.6 * depth_of_beam
+            return True
+        else:
+            return False
 
-    def calculate_maximum_plate_height(self,db,tbf,rb1,gap,notch_height,Db,Tbf,Rb1,connectivity):
+    def max_plate_height_check(self,db,tbf,rb1,gap,notch_height,Db,Tbf,Rb1,connectivity):
         """
         Args:
             db - Depth of supported beam
@@ -245,22 +248,32 @@ class Plate(Component):
             Rb1 - Root radius of supporting beam flange
             connectivity - 'beam-column','beam-beam with single notch' or 'beam-beam with double notch'
         Returns:
-            max_plate_height
+            True if plate height >= max_plate_height else False
         """
         notch_height = max(Tbf, tbf) + max(Rb1, rb1) + max(Tbf / 2, tbf / 2, 10)
         if connectivity == 'beam-column':
-            max_plate_height = db − 2*(tbf + rb1 + gap)
+            max_plate_height = db - 2*(tbf + rb1 + gap)
         if connectivity == 'beam-beam with single notch':
-            max_plate_height = db−tbf+rb1−notch_height
+            max_plate_height = db-tbf+rb1 - notch_height
         if connectivity == 'beam-beam with double notch':
-            max_plate_height = min(Db, db) − 2 ∗ notch_height
-        return max_plate_height
+            max_plate_height = min(Db, db) - 2 * notch_height
+        if self.height <= max_plate_height:
+            return True
+        else:
+            return False
 
-    def calculate_minimum_plate_width(self,bf):
-        return bf
-    def calculate_max_plate_width(self,bf):
-        return bf + 25
-    def calculate_minimum_plate_thickness(self,F,fy,hp,tw):
+    def min_plate_width_check(self,bf):
+        if self.width >= bf:
+            return True
+        else:
+            return False
+
+    def max_plate_width_check(self,bf):
+        if self.height <= bf + 25:
+            return True
+        else:
+            return False
+    def min_thickness_check(self,F,fy,hp,tw):
         """
         Args:
             F - factored shear force
@@ -270,8 +283,11 @@ class Plate(Component):
         Note:
             [Reference: N. Subramanian’s Design of Steel Structures - Chapter 5, Sec. 5.7.7 - Page 373]
         """
-        return max(tw, 5*F/(fy*hp))
-    def calculate_max_plate_thickness(self,bolt_diameter):
+        if self.thickness >= max(tw, 5*F/(fy*hp)):
+            return True
+        else:
+            return False
+    def max_thickness_check(self,bolt_diameter):
         """
         Args:
             bolt_diameter
@@ -280,18 +296,10 @@ class Plate(Component):
         Note:
             [Reference: Handbook on Structural Steel Detailing, INSDAG - Chapter 5, Section 5.2.3, Page 5.7]
         """
-        return 0.5 * bolt_diameter
-    def moment_capacity_check(Mdb,F,d_bw,f_y,Z):
-        #TODO
-        pass
-    def calculate_block_shear():
-        #TODO
-        pass
-    def shear_yielding_check():
-        pass
-
-    def shear_rupture_check():
-        pass
+        if self.thickness <= 0.5 * bolt_diameter:
+            return True
+        else:
+            return False
 
 class Angle(Component):
 
