@@ -196,7 +196,8 @@ class Weld(Component):
         self.size = size
         self.length = length
         self.throat_size = size * 0.7
-        self.eff_length = eff_length
+        self.eff_length = None
+        self.shear_strength = None
         super(Weld, self).__init__(material)
 
     def __repr__(self):
@@ -206,18 +207,20 @@ class Weld(Component):
         repr += "Length: {}".format(self.length)
         repr += "Throat_size: {}".format(self.throat_size)
         repr += "Eff_length: {}".format(self.eff_length)
+        repr += "Shear_strength: {}".format(self.shear_strength)
         return repr
 
-    def calculate_throat_size():
-        pass
+    def calculate_eff_length(self,available_length):
+        self.eff_length = IS800_2007.cl_10_5_4_1_fillet_weld_effective_length(self.size, available_length)
+        return self.eff_length
 
-    def claculate_eff_length():
-        pass
-    def calculate_shear_strength():
-        pass
+    def calculate_shear_strength(self,ultimate_stresses,fabrication):
+        self.shear_strength = IS800_2007.cl_10_5_7_1_1_fillet_weld_design_stress(ultimate_stresses, fabrication)
+        return self.shear_strength
+
     def check_for_long_joints():
+        #TODO:functions for cl_10_5_4_4 and cl_10_5_7_3
         pass
-
 
 class Plate(Component):
 
