@@ -107,6 +107,12 @@ class Section(Component):
         self.flange_thickness = 0.0
         self.root_radius = 0.0
         self.toe_radius = 0.0
+        self.Ix = 0.0
+        self.Iy = 0.0
+        self.cx = 0.0
+        self.cy = 0.0
+
+
         super(Section, self).__init__(material)
 
     def __repr__(self):
@@ -116,7 +122,7 @@ class Section(Component):
 
     def connect_to_database_update_other_attributes(self, table, designation):
         conn = sqlite3.connect(self.path_to_database)
-        db_query = "SELECT D, B, tw, T, R1, R2 FROM " + table + " WHERE Designation = ?"
+        db_query = "SELECT D, B, tw, T, R1, R2 ,Iz ,Iy FROM " + table + " WHERE Designation = ?"
         cur = conn.cursor()
         cur.execute(db_query, (designation,))
         row = cur.fetchone()
@@ -127,8 +133,12 @@ class Section(Component):
         self.flange_thickness = row[3]
         self.root_radius = row[4]
         self.toe_radius = row[5]
+        self.Ix = row[6]
+        self.Iy = row[7]
+
 
         conn.close()
+
 
 
 class Beam(Section):
@@ -143,6 +153,9 @@ class Column(Section):
     def __init__(self, designation, material=Material()):
         super(Column, self).__init__(designation, material)
         self.connect_to_database_update_other_attributes("Columns", designation)
+
+
+
 
 
 class Weld(Component):
@@ -181,6 +194,13 @@ class Angle(Component):
         self.leg_a_length = 0.0
         self.leg_b_length = 0.0
         self.thickness = 0.0
+        self.Iz = 0.0
+        self.Iy = 0.0
+        self.cz = 0
+        self.cy = 0
+        self.root_radius = 0.0
+        self.toe_radius = 0.0
+
 
         self.connect_to_database_update_other_attributes(designation)
 
@@ -194,7 +214,7 @@ class Angle(Component):
 
     def connect_to_database_update_other_attributes(self, designation):
         conn = sqlite3.connect(self.path_to_database)
-        db_query = "SELECT AXB, t FROM Angles WHERE Designation = ?"
+        db_query = "SELECT AXB, t, R1, R2, Iz, Iy, cz, cy FROM Angles WHERE Designation = ?"
         cur = conn.cursor()
         cur.execute(db_query, (designation,))
         row = cur.fetchone()
@@ -204,5 +224,12 @@ class Angle(Component):
         self.leg_a_length = float(axb.split("x")[0])
         self.leg_b_length = float(axb.split("x")[1])
         self.thickness = row[1]
+        self.root_radius = row[2]
+        self.toe_radius = row[3]
+        self.cz = row[4]
+        self.cy = row[5]
+        self.Iz = row[6]
+        self.Iy = row[7]
+
 
         conn.close()
