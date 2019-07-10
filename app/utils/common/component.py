@@ -1,5 +1,4 @@
-from app.utils.common.material import Material
-from app.utils.common.is800_2007 import IS800_2007
+from material import Material
 import sqlite3
 from is800_2007 import IS800_2007
 
@@ -43,12 +42,7 @@ class Bolt(Component):
         return repr
 
 
-    def calculate_bolt_shear_capacity(self, bolt_diameter):
-        # self.shear_capacity = IS800_2007.cl_10_3_3_bolt_shear_capacity()
-        # TODO : Bolt shear capacity functions
-        pass
-        
-        
+
     def calculate_thread_area(self):
         self.thread_area = 0.78*self.shank_area
     # todo thread_area database
@@ -61,8 +55,8 @@ class Bolt(Component):
     def calculate_bolt_shear_capacity(self):
         self.shear_capacity = IS800_2007.cl_10_3_3_bolt_shear_capacity(self.material.fub, self.shank_area, self.thread_area)
 
-    def calculate_bolt_bearing_capacity(self,t,e,p):
-        self.bearing_capacity = IS800_2007.cl_10_3_4_bolt_bearing_capacity(self.material.fu, self.material.fub, t, self.diameter, e, p)
+    def calculate_bolt_bearing_capacity(self ,t):
+        self.bearing_capacity = IS800_2007.cl_10_3_4_bolt_bearing_capacity(self.material.fu, self.material.fub, t, self.diameter,BoltGroup.edge,BoltGroup.pitch)
     # use t , e , p from bolt group class
 
     def calculate_bolt_capacity(self):
@@ -130,21 +124,21 @@ class BoltGroup(Component):
             return False
 
     def max_pitch_check(self, plate):
-        if self.pitch <= IS800_2007.cl_10_2_3_1_max_spacing(plate.thickness)
+        if self.pitch <= IS800_2007.cl_10_2_3_1_max_spacing(plate.thickness):
             return True
         else:
             return False
 
 
     def max_gauge_check(self, plate):
-        if self.gauge <= IS800_2007.cl_10_2_3_1_max_spacing(plate.thickness)
+        if self.gauge <= IS800_2007.cl_10_2_3_1_max_spacing(plate.thickness):
             return True
         else:
             return False
 
 
     def max_pitch_check_2(self, plate, compression_or_tension):
-        if self.pitch <= IS800_2007.cl_10_2_3_2_max_pitch_tension_compression(self.pitch, plate.thickness, compression_or_tension)
+        if self.pitch <= IS800_2007.cl_10_2_3_2_max_pitch_tension_compression(self.pitch, plate.thickness, compression_or_tension):
             return True
         else:
             return False
@@ -204,6 +198,7 @@ class Section(Component):
         self.Iy = 0.0
         self.cx = 0.0
         self.cy = 0.0
+        self.buckling_class = ""
 
 
         super(Section, self).__init__(material)
@@ -234,11 +229,14 @@ class Section(Component):
 
 
 
+
+
 class Beam(Section):
 
     def __init__(self, designation, material=Material()):
         super(Beam, self).__init__(designation, material)
         self.connect_to_database_update_other_attributes("Beams", designation)
+
 
 
 class Column(Section):
@@ -280,9 +278,7 @@ class Weld(Component):
         self.shear_strength = IS800_2007.cl_10_5_7_1_1_fillet_weld_design_stress(ultimate_stresses, fabrication)
         return self.shear_strength
 
-    def check_for_long_joints():
-        #TODO:functions for cl_10_5_4_4 and cl_10_5_7_3
-        pass
+
 
 class Plate(Component):
 
@@ -311,7 +307,7 @@ class Plate(Component):
         5, Section
         5.2.3, Page 5.7
         """
-        if self.height >= 0.6 * depth_of_beam
+        if self.height >= 0.6 * depth_of_beam:
             return True
         else:
             return False
