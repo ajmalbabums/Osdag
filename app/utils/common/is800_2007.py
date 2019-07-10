@@ -72,9 +72,9 @@ class IS800_2007(object):
         """
         if cl_3_7_Table_2[0]["outstanding_elements_compression_flange"]["rolled"] <= 9.4 * e:
             return "class1"
-        elif cl_3_7_Table_2[0]["outstanding_elements_compression_flange"]["rolled"] > 9.4 * e and cl_3_7_Table_2[0]["outstanding_elements_compression_flange"]["rolled"] <= 10.5 * e:
+        elif 10.5 * e >= cl_3_7_Table_2[0]["outstanding_elements_compression_flange"]["rolled"] > 9.4 * e:
             return "class2"
-        elif cl_3_7_Table_2[0]["outstanding_elements_compression_flange"]["rolled"] > 10.5 * e and cl_3_7_Table_2[0]["outstanding_elements_compression_flange"]["rolled"] < 15 * e:
+        elif 15*e >= cl_3_7_Table_2[0]["outstanding_elements_compression_flange"]["rolled"] > 10.5 * e:
             return "class3"
         elif cl_3_7_Table_2[0]["outstanding_elements_compression_flange"]["welded"] <= 8.4 * e:
             return "class1"
